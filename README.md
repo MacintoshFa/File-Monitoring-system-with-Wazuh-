@@ -159,7 +159,7 @@ How to Deploy Ubuntu Desktop Agent on Wazuh Dashboard
 
 Deployment Steps
 
-1. Access Wazuh Dashboard
+# 1. Access Wazuh Dashboard
 
 1. Open Wazuh Dashboard in your web browser
 2. Navigate to Endpoints → Deploy new agent
@@ -168,7 +168,7 @@ Deployment Steps
 
 2. Select Linux Agent Architecture
    
-Choose the appropriate package for your system:
+* Choose the appropriate package for your system:
 
 |Package Type   |Use Case                                 |
 |---------------|-----------------------------------------|
@@ -182,7 +182,7 @@ Example: Select DEB aarch64 for ARM-based Ubuntu systems
 
 3. Configure Server Address
 
-Field: Assign a server address
+* Field: Assign a server address
 
 Value: 10.0.0.6 (or your Wazuh Manager IP/FQDN)
 
@@ -191,7 +191,7 @@ Option: Check "Remember server address" to save for future deployments
 
 4. Set Agent Name
 
-Field: Assign an agent name
+* Field: Assign an agent name
 
   Default: Uses system hostname
 
@@ -202,17 +202,16 @@ Example: ubuntu_Desktop
 
 5. Select Agent Groups
 
-Field: Select one or more existing groups
+* Field: Select one or more existing groups
 
-Example: Default
+   Example: Default
 
 Purpose: Organize and manage agent policies
 
-![image](ubuntuwazuh.png)
 
 6. Execute Installation Commands
    
-Copy and run the provided installation commands on your Ubuntu system:
+   Copy and run the provided installation commands on your Ubuntu system:
 
 # Commands will be displayed in the dashboard
 
@@ -228,6 +227,7 @@ sudo systemctl enable wazuh-agent
 
 
 7. Verify Agent Enrollment
+---
 
 1. Return to Wazuh Dashboard
 
@@ -242,14 +242,14 @@ sudo systemctl enable wazuh-agent
 2. Navigate to the Wazuh Dashboard:
 
 ```text
-https://WAZUH_SERVER_IP
+   https://WAZUH_SERVER_IP
 ```
 
 3. Log in using administrator credentials
 4. Navigate to:
 
 ```text
-Endpoints → Deploy new agent
+   Endpoints → Deploy new agent
 ```
 
 This section generates installation commands for endpoint enrollment.
