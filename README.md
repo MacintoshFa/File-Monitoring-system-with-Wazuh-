@@ -154,102 +154,244 @@ sudo systemctl status wazuh-manager
 
 # Deploy Wazuh Agent on Ubuntu Desktop
 
-Install agent:
 
-```bash
-sudo apt install wazuh-agent -y
-```
+How to Deploy Ubuntu Desktop Agent on Wazuh Dashboard
 
-Edit configuration:
+Deployment Steps
 
-```bash
-sudo nano /var/ossec/etc/ossec.conf
-```
+1. Access Wazuh Dashboard
 
-Configure Wazuh manager address:
+1. Open Wazuh Dashboard in your web browser
+2. Navigate to Endpoints → Deploy new agent
+3. Confirm you're on the "Deploy new agent" tab
 
-```xml
-<server>
-  <address>WAZUH_SERVER_IP</address>
-</server>
-```
 
-Enable and start agent:
+2. Select Linux Agent Architecture
+   
+Choose the appropriate package for your system:
 
-```bash
-sudo systemctl enable wazuh-agent
+|Package Type   |Use Case                                 |
+|---------------|-----------------------------------------|
+|**DEB amd64**  |64-bit Intel/AMD processors (most common)|
+|**DEB aarch64**|ARM-based systems (shown in example)     |
+|RPM amd64      |64-bit RedHat/CentOS systems             |
+|RPM aarch64    |ARM-based RedHat/CentOS systems          |
+
+Example: Select DEB aarch64 for ARM-based Ubuntu systems
+
+
+3. Configure Server Address
+
+Field: Assign a server address
+
+Value: 10.0.0.6 (or your Wazuh Manager IP/FQDN)
+
+Option: Check "Remember server address" to save for future deployments
+
+
+4. Set Agent Name
+
+Field: Assign an agent name
+
+  Default: Uses system hostname
+
+Example: ubuntu_Desktop
+
+  Note: Agent name must be unique and cannot be changed after enrollment
+
+
+5. Select Agent Groups
+
+Field: Select one or more existing groups
+
+Example: Default
+
+Purpose: Organize and manage agent policies
+
+![image](ubuntuwazuh.png)
+
+6. Execute Installation Commands
+   
+Copy and run the provided installation commands on your Ubuntu system:
+
+# Commands will be displayed in the dashboard
+
+ Example structure:
+ 
+    # curl -s <download_url> | sudo bash
+
+
 sudo systemctl start wazuh-agent
+
+
+sudo systemctl enable wazuh-agent
+
+
+7. Verify Agent Enrollment
+
+1. Return to Wazuh Dashboard
+
+2. Check Agents list for your ubuntu_Desktop agent
+   
+3. Confirm status shows "Active"
+---
+# Deploy Wazuh Agent on Windows Desktop
+ Step 1: Access the Wazuh Dashboard
+
+1. Open a web browser
+2. Navigate to the Wazuh Dashboard:
+
+```text
+https://WAZUH_SERVER_IP
 ```
 
-Verify status:
+3. Log in using administrator credentials
+4. Navigate to:
 
-```bash
-sudo systemctl status wazuh-agent
+```text
+Endpoints → Deploy new agent
+```
+
+This section generates installation commands for endpoint enrollment.
+
+---
+
+# Step 2: Select Windows Agent Package
+
+Under operating system selection:
+
+```text
+  Windows
+```
+
+Select package architecture:
+
+```text
+  Windows MSI 64-bit
+```
+
+This package is used for standard Windows 11 systems.
+
+---
+
+# Step 3: Configure Wazuh Manager Address
+
+Under:
+
+```text
+  Assign a server address
+```
+
+Enter the IP address or hostname of the Wazuh Manager.
+
+Example:
+
+```text
+    10.0.0.6
+```
+
+Optional:
+
+* Enable “Remember server address” for future deployments
+
+This allows the Windows agent to communicate with the Wazuh server.
+
+---
+
+# Step 4: Configure Agent Name
+
+Under:
+
+```text
+    Assign an agent name
+```
+
+Enter a unique endpoint identifier.
+
+Example:
+
+```text
+    Windows11-Endpoint
+```
+
+Important:
+
+* Agent names must be unique
+* Agent names cannot be modified after enrollment
+
+---
+
+# Step 5: Select Agent Group
+
+Choose an existing Wazuh group.
+
+Example:
+
+```text
+    Default
+```
+
+Groups help organize endpoints and apply centralized monitoring policies.
+
+---
+
+# Step 6: Run Installation Command
+
+The Wazuh Dashboard automatically generates a PowerShell installation command.
+
+  Open PowerShell as Administrator and run the generated command.
+
+Example:
+
+```powershell
+      Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.x.x-1.msi -OutFile wazuh-            agent.msimsiexec.exe /i wazuh-agent.msi /q WAZUH_MANAGER='WAZUH_SERVER_IP' WAZUH_AGENT_NAME='Windows11-Endpoint'
+```
+
+Start the Wazuh service:
+
+```powershell
+    NET START WazuhSvc
+```
+
+These commands:
+
+* Download the Wazuh agent
+* Install the agent silently
+* Configure manager communication
+* Register the endpoint
+* Start monitoring services
+
+---
+
+# Step 7: Verify Agent Service
+
+Check Windows service status:
+
+```powershell
+    Get-Service WazuhSvc
+```
+
+Expected output:
+
+```text
+    Running
 ```
 
 ---
 
-# Register Agent with Wazuh Server
-
-On Wazuh Server:
-
-```bash
-sudo /var/ossec/bin/manage_agents
-```
-
-Select:
-
-```text
-A - Add Agent
-```
-
-Enter:
-
-* Agent name
-* Agent IP address
-
-Extract key:
-
-```text
-E - Extract key
-```
-
-Copy generated key.
-
-On Ubuntu Desktop:
-
-```bash
-sudo /var/ossec/bin/manage_agents
-```
-
-Select:
-
-```text
-I - Import key
-```
-
-Paste generated key.
-
-Restart agent:
-
-```bash
-sudo systemctl restart wazuh-agent
-```
-
----
 
 # Verify Agent Enrollment
 
 Navigate to:
 
 ```text
-Wazuh Dashboard → Agents
+    Wazuh Dashboard → Agents
 ```
 
-Expected status:
+Expected status for both ubuntu and windows:
 
 ```text
-Active
+    Active
 ```
 
 ---
@@ -259,7 +401,7 @@ Active
 Edit Wazuh agent configuration:
 
 ```bash
-sudo nano /var/ossec/etc/ossec.conf
+    sudo nano /var/ossec/etc/ossec.conf
 ```
 
 Locate the syscheck section.
