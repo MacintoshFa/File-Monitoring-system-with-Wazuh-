@@ -480,7 +480,7 @@ Expected Result:
 * Wazuh detects modification
 * Wazuh detects deletion
 * Alerts appear in dashboard
-
+![image](logs.png)
 ---
 
 # Simulate Unauthorized Changes
