@@ -568,7 +568,7 @@ Syscheck Configuration
   <directories check_all="yes" realtime="yes">C:\Users</directories>
 </syscheck>
 ```
-
+![image](conf.png)
 ---
 
 Configuration Fields
@@ -610,13 +610,13 @@ net start WazuhSvc
 Expected result
 
 ```
-File creation detected
+File added
 
 ```
 ---
 
 Dashboard Review
-
+![image](fileadded.png)
 
 Event fields
 
