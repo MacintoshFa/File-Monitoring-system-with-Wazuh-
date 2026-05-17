@@ -376,6 +376,7 @@ Expected output:
 ```text
     Running
 ```
+![image](wazuhrunning.png)
 
 ---
 
@@ -393,10 +394,11 @@ Expected status for both ubuntu and windows:
 ```text
     Active
 ```
+![image](active.png)
 
 ---
 
-# Configure File Integrity Monitoring
+# Configure File Integrity Monitoring on Ubuntu
 
 Edit Wazuh agent configuration:
 
