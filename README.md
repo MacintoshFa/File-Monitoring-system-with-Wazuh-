@@ -23,7 +23,7 @@ The project uses Ubuntu Server as the Wazuh Manager ,Windows 11 and Ubuntu Deskt
 | -------------- | ------------------------- |
 | Ubuntu Server  | Wazuh Server              |
 | Ubuntu Desktop | Monitored Endpoint        |
-| Kali Linux     | Attack Simulation Machine |
+| Windows 11     | Monitored Endpoint|
 
 Network Type: Bridged Adapter
 
@@ -46,7 +46,6 @@ Network Type: Bridged Adapter
 * VirtualBox
 * Ubuntu Server
 * Ubuntu Desktop
-* Kali Linux
 * Wazuh
 * Linux CLI Tools
 * Windows 11
@@ -90,7 +89,7 @@ Recommended configuration:
 
 ---
 
-## Kali Linux
+## Windows 11
 
 Recommended configuration:
 
@@ -416,7 +415,7 @@ Example configuration:
   <directories check_all="yes" realtime="yes">/etc,/var/www,/home</directories>
 </syscheck>
 ```
-
+![image](conf_file.png)
 Explanation:
 
 * `frequency` defines scan interval in seconds
@@ -480,7 +479,6 @@ Expected Result:
 * Wazuh detects modification
 * Wazuh detects deletion
 * Alerts appear in dashboard
-![image](logs.png)
 ---
 
 # Simulate Unauthorized Changes
@@ -546,26 +544,93 @@ FIM alerts display:
 
 ---
 
-# Attack Simulation
-
-## Simulate Suspicious File Activity
-
-From Kali Linux, access shared directories or monitored folders and create suspicious files.
-
-Example:
-
-```bash
-echo "malicious activity" > suspicious.txt
-```
-
 Expected Result:
 
 * Wazuh generates FIM alert
 * Dashboard records file activity
 * Alerts contain event details
+![image](logs.png)
+---
+# Configure File Integrity Monitoring on windows 11
+
+Edit Wazuh agent configuration:
+```
+C:\Program Files (x86)\ossec-agent\ossec.conf
+```
 
 ---
 
+Syscheck Configuration
+
+```xml
+<syscheck>
+  <frequency>43200</frequency>
+  <directories check_all="yes" realtime="yes">C:\Users</directories>
+</syscheck>
+```
+
+---
+
+Configuration Fields
+
+```
+frequency
+Interval between full integrity scans in seconds
+
+check_all
+Monitors file attributes including hash, size, permissions
+
+realtime
+Triggers immediate detection on file changes
+
+directories
+Defines monitored file paths
+
+```
+
+---
+
+Restart Wazuh Agent
+
+PowerShell
+
+```
+Restart-Service WazuhSvc
+```
+
+Command Prompt
+
+```
+net stop WazuhSvc
+net start WazuhSvc
+```
+
+---
+# Back on the wazuh server dashboard 
+Expected result
+
+```
+File creation detected
+
+```
+---
+
+Dashboard Review
+
+
+Event fields
+
+```
+file.path
+event.type
+timestamp
+user.name
+syscheck.diff
+syscheck.checksum
+rule.level
+```
+
+---
 # Benefits of File Integrity Monitoring
 
 * Detects unauthorized file changes
@@ -574,15 +639,6 @@ Expected Result:
 * Supports compliance requirements
 * Helps detect malware persistence
 * Provides real time monitoring
-
----
-
-# Challenges Encountered
-
-* Configuring syscheck correctly
-* Monitoring large directories efficiently
-* Troubleshooting agent communication
-* Managing alert noise and false positives
 
 ---
 
@@ -599,21 +655,8 @@ Expected Result:
 
 ---
 
-# Screenshots to Include
-
-* Wazuh dashboard overview
-* Active Wazuh agent
-* Syscheck configuration
-* File creation alert
-* File modification alert
-* File deletion alert
-* Wazuh security events page
-
----
-
 # Future Improvements
 
-* Monitor Windows file systems
 * Add malware detection rules
 * Integrate Suricata alerts
 * Configure email notifications
@@ -645,6 +688,6 @@ Built a File Integrity Monitoring solution using Wazuh and Ubuntu systems in a V
 
 # Author
 
-Your Name
+Macintosh Fatal
 
 Cybersecurity Student | SOC Analyst Aspirant | Homelab Enthusiast
